@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="杂," />
+  <meta name="keywords" content="Hexo,next" />
 
 
 
@@ -39,19 +39,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
+<meta name="description" content="焊接问题的一些看法最近在调试STM32的外置Nor Flash时遇到了一些比较棘手的问题，最后被证明是手工焊接问题，就此谈谈焊接，尤其是手工焊接相关的事。首先发生的是Nor Flash完全无法读写，解决了混乱配置下的读写权限问题后，依旧无法读出正常的ID，无奈之下只好重新焊了一块，ID读出正常，于是怀疑是Nor Flash损坏，淘宝货总是不让人放心；但后期突然有块又读写异常，用点锡重新挂一遍后又正">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新博开张">
-<meta property="og:url" content="http://yoursite.com/2015/10/18/startup/index.html">
+<meta property="og:title" content="solder-problem-reflection">
+<meta property="og:url" content="http://yoursite.com/2015/12/21/solder-problem-reflection/index.html">
 <meta property="og:site_name" content="Allium's Blog">
-<meta property="og:description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
-<meta property="og:updated_time" content="2015-10-18T06:40:41.543Z">
+<meta property="og:description" content="焊接问题的一些看法最近在调试STM32的外置Nor Flash时遇到了一些比较棘手的问题，最后被证明是手工焊接问题，就此谈谈焊接，尤其是手工焊接相关的事。首先发生的是Nor Flash完全无法读写，解决了混乱配置下的读写权限问题后，依旧无法读出正常的ID，无奈之下只好重新焊了一块，ID读出正常，于是怀疑是Nor Flash损坏，淘宝货总是不让人放心；但后期突然有块又读写异常，用点锡重新挂一遍后又正">
+<meta property="og:updated_time" content="2015-12-24T14:37:58.176Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新博开张">
-<meta name="twitter:description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
+<meta name="twitter:title" content="solder-problem-reflection">
+<meta name="twitter:description" content="焊接问题的一些看法最近在调试STM32的外置Nor Flash时遇到了一些比较棘手的问题，最后被证明是手工焊接问题，就此谈谈焊接，尤其是手工焊接相关的事。首先发生的是Nor Flash完全无法读写，解决了混乱配置下的读写权限问题后，依旧无法读出正常的ID，无奈之下只好重新焊了一块，ID读出正常，于是怀疑是Nor Flash损坏，淘宝货总是不让人放心；但后期突然有块又读写异常，用点锡重新挂一遍后又正">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -63,7 +60,7 @@
 
 
 
-  <title> 新博开张 | Allium's Blog </title>
+  <title> solder-problem-reflection | Allium's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -165,7 +162,7 @@
           
           
             
-              新博开张
+              solder-problem-reflection
             
           
         </h1>
@@ -174,8 +171,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2015-10-18T14:11:56+08:00" content="2015-10-18">
-            2015-10-18
+          <time itemprop="dateCreated" datetime="2015-12-21T22:35:11+08:00" content="2015-12-21">
+            2015-12-21
           </time>
         </span>
 
@@ -194,33 +191,23 @@
       
 
       
-        <span itemprop="articleBody"><p>　　自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。</p>
-<p>　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了<a href="http://bingoh.github.io" target="_blank" rel="external">BingoH</a>的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年的域名也算有了用途，希望能够坚持下去。</p>
-<p>　　本博客主要关注电子及计算机行业，由于工作是硬件相关，更多的会涉及硬件，尤其是FPGA和单片机方向。</p>
+        <span itemprop="articleBody"><h1 id="焊接问题的一些看法">焊接问题的一些看法</h1><p>最近在调试STM32的外置Nor Flash时遇到了一些比较棘手的问题，最后被证明是手工焊接问题，就此谈谈焊接，尤其是手工焊接相关的事。<br>首先发生的是Nor Flash完全无法读写，解决了混乱配置下的读写权限问题后，依旧无法读出正常的ID，无奈之下只好重新焊了一块，ID读出正常，于是怀疑是Nor Flash损坏，淘宝货总是不让人放心；但后期突然有块又读写异常，用点锡重新挂一遍后又正常，突然意识到都是焊接惹的祸。而后Nor Flash的调试顺利了很多，最终完成通过网络传输文件写入并读出传回对比，但结果不理想，误码很多；由于用的是S29GL256P芯片，对比数据手册后发现该芯片实在片选信号CS的下降沿缓存的地址，但STM32的FSMC接口地址最多会比片选信号晚4ns。这是个很奇怪的设定，不清楚设计两种芯片的工程师是怎么想的，原则上两者并不兼容；不过ST官方有读写S29GL128P的例子，不免让人觉得莫名其妙。这里插一句，ST的Nor Flash库函数并不适合S29GLxxxP，更无语的是ProgramBuffer函数写明只能支持S29GL128P，但实际没有办法读写S29GL-P系列的任何芯片。回归正题，针对错码问题，首先尝试了两次读取做对比，发现居然不一样，一开始一直怀疑就是时序不满足的问题，但某次加锡之后竟然发现两次读取一致了，最终问题还是出现在焊接上。<br>而后又焊接了FPGA，由于前边的焊接没有出问题，FPGA一次通过，所以焊接之后也没有检测。一直等到在对Nor读写没有思路，准备换换花样的时候发现两块FPGA都不能连接调试。一开始怀疑是LQFP封装的FPGA背部的pad没有连接到地（过孔不是很大，而且填满，怀疑内部有空气，导致没有接触），但实际补焊了N次，依旧没办法连接；甚至最后拆了一块，发现背部连接良好。没办法，焊盘都要弄坏了。在检查信号的时候发现FPC接口有几个脚焊接不良；结果焊好后还是不能连接。考虑到这么多的焊接问题，于是对FPGA管脚进行了补焊，果然，能够连接上了。<br>除了这些，在一次调试中还发现QFN的网络芯片在按压后正常，可能也是焊接惹的祸。此外，有次笔记本无法开机，怀疑是CPU背部大电容的锅，在几次尝试后都没成功，时隔几个月后，刀片除去表面层，重新焊接，居然得救。经历过这些，不得不承认，焊接问题确实在电路问题中占了一大部分。<br>当然，仔细分析这些，除了大电容焊接是因为焊盘表面清理不佳。其他基本都是小封装（精细管脚）情况下，焊接不良导致的。这次的板子使用了两片144管脚的主芯，管脚宽0.22，间距0.65，考虑到手工焊接的方便，管脚外侧还留了1mm左右的焊盘，在焊接时比较容易造成烙铁带走大部分焊锡，导致焊接不良。而QFN的焊接还不娴熟，管脚也很细，接触也不是很好。板子大小为68*86，板厚1.6mm，三边使用2.54mm间距的排针连接，总共有一百多脚，在拔插的时候，机械应力造成板子形变比较大，影响焊接质量。<br>一直以来，虚焊和静电击穿一样，一直作为两大</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/杂/" rel="tag">#杂</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/19/drive-lcd/" rel="prev">LCD接口及驱动电路</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/18/hello-world/" rel="next">Hello World</a>
+              <a href="/2015/11/18/FSMC-timing-constraints/" rel="next">FSMC-timing-constraints</a>
             
           </div>
         </div>
@@ -324,7 +311,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#焊接问题的一些看法"><span class="nav-number">1.</span> <span class="nav-text">焊接问题的一些看法</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

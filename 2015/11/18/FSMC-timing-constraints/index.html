@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="杂," />
+  <meta name="keywords" content="STM32,FPGA,FSMC,时序" />
 
 
 
@@ -39,19 +39,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
+<meta name="description" content="FSMC时序约束前言FSMC是STM32使用频率最高的接口之一，作为较高级的一种单片机，STM32系列拥有更加接近通用计算机的外部接口，比如网络、USB以及存储器接口，也就是FSMC或者FMC。一般需要STM32的应用也肯定需要外部存储，不管是易失性存储器比如SRAM、SDRAM还是非易失性的NOR Flash、Nand Flash；这些都需要通过FSMC接口与STM32进行连接。STM32一般支">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新博开张">
-<meta property="og:url" content="http://yoursite.com/2015/10/18/startup/index.html">
+<meta property="og:title" content="FSMC-timing-constraints">
+<meta property="og:url" content="http://yoursite.com/2015/11/18/FSMC-timing-constraints/index.html">
 <meta property="og:site_name" content="Allium's Blog">
-<meta property="og:description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
-<meta property="og:updated_time" content="2015-10-18T06:40:41.543Z">
+<meta property="og:description" content="FSMC时序约束前言FSMC是STM32使用频率最高的接口之一，作为较高级的一种单片机，STM32系列拥有更加接近通用计算机的外部接口，比如网络、USB以及存储器接口，也就是FSMC或者FMC。一般需要STM32的应用也肯定需要外部存储，不管是易失性存储器比如SRAM、SDRAM还是非易失性的NOR Flash、Nand Flash；这些都需要通过FSMC接口与STM32进行连接。STM32一般支">
+<meta property="og:updated_time" content="2015-12-15T14:59:44.181Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新博开张">
-<meta name="twitter:description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
+<meta name="twitter:title" content="FSMC-timing-constraints">
+<meta name="twitter:description" content="FSMC时序约束前言FSMC是STM32使用频率最高的接口之一，作为较高级的一种单片机，STM32系列拥有更加接近通用计算机的外部接口，比如网络、USB以及存储器接口，也就是FSMC或者FMC。一般需要STM32的应用也肯定需要外部存储，不管是易失性存储器比如SRAM、SDRAM还是非易失性的NOR Flash、Nand Flash；这些都需要通过FSMC接口与STM32进行连接。STM32一般支">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -63,7 +60,7 @@
 
 
 
-  <title> 新博开张 | Allium's Blog </title>
+  <title> FSMC-timing-constraints | Allium's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -165,7 +162,7 @@
           
           
             
-              新博开张
+              FSMC-timing-constraints
             
           
         </h1>
@@ -174,8 +171,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2015-10-18T14:11:56+08:00" content="2015-10-18">
-            2015-10-18
+          <time itemprop="dateCreated" datetime="2015-11-18T22:15:12+08:00" content="2015-11-18">
+            2015-11-18
           </time>
         </span>
 
@@ -194,10 +191,9 @@
       
 
       
-        <span itemprop="articleBody"><p>　　自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。</p>
-<p>　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了<a href="http://bingoh.github.io" target="_blank" rel="external">BingoH</a>的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年的域名也算有了用途，希望能够坚持下去。</p>
-<p>　　本博客主要关注电子及计算机行业，由于工作是硬件相关，更多的会涉及硬件，尤其是FPGA和单片机方向。</p>
-</span>
+        <span itemprop="articleBody"><h1 id="FSMC时序约束">FSMC时序约束</h1><h2 id="前言">前言</h2><p>FSMC是STM32使用频率最高的接口之一，作为较高级的一种单片机，STM32系列拥有更加接近通用计算机的外部接口，比如网络、USB以及存储器接口，也就是FSMC或者FMC。一般需要STM32的应用也肯定需要外部存储，不管是易失性存储器比如SRAM、SDRAM还是非易失性的NOR Flash、Nand Flash；这些都需要通过FSMC接口与STM32进行连接。<br>STM32一般支持512Mbytes的寻址空间，数据位宽可以支持8位或者16位；需要注意的是，这里的地址都是针对字节的，如果使用了16位的数据总线，则STM32会自动将地址右移一位，这点对于调试至关重要，尤其是针对FPGA模拟的存储器，网络上没有对于CFI接口的公开描述，这些细节只好研究实际的控制时序来得到。除此以外，存储器的接口还是有一定的细节区别，需要仔细阅读存储芯片的数据手册以及STM32的program manual的FSMC章节。对于FSMC的管脚分配，地址和数据都能设置成不同的位宽来适应不同的需求，辅助性的信号比如nWAIT这种也都可以按需分配，可以使用CUBEMX工具提前验证想法。</p>
+<h2 id="存储器介绍">存储器介绍</h2><p>FSMC接口能够支持SRAM、PSRAM、SDRAM、Nor、Nand等几种存储器。其中SRAM的控制最为简单，使用片选信号选择不同的目标，使用读写控制信号来控制数据传输方向，剩下的地址和数据只要满足时序就能正常读写；除了这几个重要信号，SRAM还可以有控制高低字节以及传输等待之类的辅助信号。</p>
+<h2 id="FPGA时序约束">FPGA时序约束</h2></span>
       
     </div>
 
@@ -205,7 +201,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/杂/" rel="tag">#杂</a>
+            <a href="/tags/STM32-FPGA-FSMC/" rel="tag">#STM32,FPGA,FSMC</a>
           
         </div>
       
@@ -214,13 +210,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/19/drive-lcd/" rel="prev">LCD接口及驱动电路</a>
+              <a href="/2015/12/21/solder-problem-reflection/" rel="prev">solder-problem-reflection</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/18/hello-world/" rel="next">Hello World</a>
+              <a href="/2015/11/18/STM32-FPGA-step-by-step/" rel="next">STM32+FPGA-step-by-step</a>
             
           </div>
         </div>
@@ -324,7 +320,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FSMC时序约束"><span class="nav-number">1.</span> <span class="nav-text">FSMC时序约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储器介绍"><span class="nav-number">1.2.</span> <span class="nav-text">存储器介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FPGA时序约束"><span class="nav-number">1.3.</span> <span class="nav-text">FPGA时序约束</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

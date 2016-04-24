@@ -163,6 +163,201 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/21/solder-problem-reflection/" itemprop="url">
+                solder-problem-reflection
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2015-12-21T22:35:11+08:00" content="2015-12-21">
+            2015-12-21
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="焊接问题的一些看法">焊接问题的一些看法</h1><p>最近在调试STM32的外置Nor Flash时遇到了一些比较棘手的问题，最后被证明是手工焊接问题，就此谈谈焊接，尤其是手工焊接相关的事。<br>首先发生的是Nor Flash完全无法读写，解决了混乱配置下的读写权限问题后，依旧无法读出正常的ID，无奈之下只好重新焊了一块，ID读出正常，于是怀疑是Nor Flash损坏，淘宝货总是不让人放心；但后期突然有块又读写异常，用点锡重新挂一遍后又正常，突然意识到都是焊接惹的祸。而后Nor Flash的调试顺利了很多，最终完成通过网络传输文件写入并读出传回对比，但结果不理想，误码很多；由于用的是S29GL256P芯片，对比数据手册后发现该芯片实在片选信号CS的下降沿缓存的地址，但STM32的FSMC接口地址最多会比片选信号晚4ns。这是个很奇怪的设定，不清楚设计两种芯片的工程师是怎么想的，原则上两者并不兼容；不过ST官方有读写S29GL128P的例子，不免让人觉得莫名其妙。这里插一句，ST的Nor Flash库函数并不适合S29GLxxxP，更无语的是ProgramBuffer函数写明只能支持S29GL128P，但实际没有办法读写S29GL-P系列的任何芯片。回归正题，针对错码问题，首先尝试了两次读取做对比，发现居然不一样，一开始一直怀疑就是时序不满足的问题，但某次加锡之后竟然发现两次读取一致了，最终问题还是出现在焊接上。<br>而后又焊接了FPGA，由于前边的焊接没有出问题，FPGA一次通过，所以焊接之后也没有检测。一直等到在对Nor读写没有思路，准备换换花样的时候发现两块FPGA都不能连接调试。一开始怀疑是LQFP封装的FPGA背部的pad没有连接到地（过孔不是很大，而且填满，怀疑内部有空气，导致没有接触），但实际补焊了N次，依旧没办法连接；甚至最后拆了一块，发现背部连接良好。没办法，焊盘都要弄坏了。在检查信号的时候发现FPC接口有几个脚焊接不良；结果焊好后还是不能连接。考虑到这么多的焊接问题，于是对FPGA管脚进行了补焊，果然，能够连接上了。<br>除了这些，在一次调试中还发现QFN的网络芯片在按压后正常，可能也是焊接惹的祸。此外，有次笔记本无法开机，怀疑是CPU背部大电容的锅，在几次尝试后都没成功，时隔几个月后，刀片除去表面层，重新焊接，居然得救。经历过这些，不得不承认，焊接问题确实在电路问题中占了一大部分。<br>当然，仔细分析这些，除了大电容焊接是因为焊盘表面清理不佳。其他基本都是小封装（精细管脚）情况下，焊接不良导致的。这次的板子使用了两片144管脚的主芯，管脚宽0.22，间距0.65，考虑到手工焊接的方便，管脚外侧还留了1mm左右的焊盘，在焊接时比较容易造成烙铁带走大部分焊锡，导致焊接不良。而QFN的焊接还不娴熟，管脚也很细，接触也不是很好。板子大小为68*86，板厚1.6mm，三边使用2.54mm间距的排针连接，总共有一百多脚，在拔插的时候，机械应力造成板子形变比较大，影响焊接质量。<br>一直以来，虚焊和静电击穿一样，一直作为两大</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/18/FSMC-timing-constraints/" itemprop="url">
+                FSMC-timing-constraints
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2015-11-18T22:15:12+08:00" content="2015-11-18">
+            2015-11-18
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="FSMC时序约束">FSMC时序约束</h1><h2 id="前言">前言</h2><p>FSMC是STM32使用频率最高的接口之一，作为较高级的一种单片机，STM32系列拥有更加接近通用计算机的外部接口，比如网络、USB以及存储器接口，也就是FSMC或者FMC。一般需要STM32的应用也肯定需要外部存储，不管是易失性存储器比如SRAM、SDRAM还是非易失性的NOR Flash、Nand Flash；这些都需要通过FSMC接口与STM32进行连接。<br>STM32一般支持512Mbytes的寻址空间，数据位宽可以支持8位或者16位；需要注意的是，这里的地址都是针对字节的，如果使用了16位的数据总线，则STM32会自动将地址右移一位，这点对于调试至关重要，尤其是针对FPGA模拟的存储器，网络上没有对于CFI接口的公开描述，这些细节只好研究实际的控制时序来得到。除此以外，存储器的接口还是有一定的细节区别，需要仔细阅读存储芯片的数据手册以及STM32的program manual的FSMC章节。对于FSMC的管脚分配，地址和数据都能设置成不同的位宽来适应不同的需求，辅助性的信号比如nWAIT这种也都可以按需分配，可以使用CUBEMX工具提前验证想法。</p>
+<h2 id="存储器介绍">存储器介绍</h2><p>FSMC接口能够支持SRAM、PSRAM、SDRAM、Nor、Nand等几种存储器。其中SRAM的控制最为简单，使用片选信号选择不同的目标，使用读写控制信号来控制数据传输方向，剩下的地址和数据只要满足时序就能正常读写；除了这几个重要信号，SRAM还可以有控制高低字节以及传输等待之类的辅助信号。</p>
+<h2 id="FPGA时序约束">FPGA时序约束</h2></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/18/STM32-FPGA-step-by-step/" itemprop="url">
+                STM32+FPGA-step-by-step
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2015-11-18T20:02:53+08:00" content="2015-11-18">
+            2015-11-18
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="STM32+FPGA平台构建指南">STM32+FPGA平台构建指南</h1><h2 id="前言">前言</h2><p>如今的电子中央单元五花八门，一个电子工程师需要面对各种各样的MCU、DSP、FPGA，小众一点，还有XMOS之类的器件，这也就是为什么用了中央单元这么一个牵强的词汇。对于大部分数字应用来说，一个强大的MCU就足以应付，实在不行就提高频率，增加面积，一个不行就两个；这也是当前的主流思路，毕竟软件开发比硬件开发来得容易的多。当然还是有少数应用场景牢牢地被FPGA占据，当然空间也越来越少，这些少数的场景主要是高可靠性高性能要求的工业并行控制、通信行业、图像处理行业等。<br>当然，不管怎么说，FPGA都是个很有趣的平台，能够实现任何你想实现的数字电路，不幸的是，FPGA的开发难度很高，特别针对串行逻辑设计，虽然有软核之类的IP，针对某些特定应用效果也很好，但总有些别扭。当然，现在有一种完美的选择，SOC，以zynq为代表的ARM+FPGA的完美平台，不过无奈的是，完美意味着贵，zynq最低端的芯片也要一百多软妹币，硬件设计难度也很大。比较折中的一种实现就是MCU芯片+FPGA芯片，通过高速存储通道进行通信，这就是本文讨论的主题。类似的平台其实也不鲜见，应用极其广泛的DSP+FPGA就算是一个变种；当然如果三者联合起来，那就是一种更有趣的平台了。<br>当然，一切以应用为导向，MCU+FPGA平台主要面向对并行和通信都有一定要求的场合，比如高可靠性的多电机控制。</p>
+<h2 id="器件选型">器件选型</h2><h3 id="MCU选型">MCU选型</h3><p>如今的MCU也是五花八门，虽然ARM有点一家独大的意思，MIPS、PPC甚至51也都还有一定的生存空间。从去年开始接触MCU以来，一共也就接触了AVR、STM8S、STM32三个类型五六种型号的芯片，接触不算多，认识可能还不够。总的来说，AVR在STM32以前很是火了一把，用起来比较舒服，相对稳定，但价格较高二解密简单，慢慢走向没落，如今atmel已被收购，一代霸主悄然落幕。PIC没有用过，网上的说法是极其稳定，相对小众。MSP系列主要面向低功耗，不过TI的开发环境个人觉得比较好。C8051系列只基本接触过，了解不深，似乎没有太大的特色。那么，现在到底应该选择哪一款MCU呢，没错，ST的；不过先说说缺点，STM8系列并没有使用ARM核心，开发环境比较麻烦，当然，IAR for STM8S已经有和谐了；早期的STM32和STM8系列的晶振电路都不稳定，容易受干扰，虽然现在似乎没有类似的抱怨，但总有些担心；此外ST的产品体系还是比较大的，库也比较大，资料较为分散，对于初学者和其他平台转型过来的开发者在最初并不是那么友好。再来说说优点，系列完整，可以用一个体系应对基本所有MCU需求，调试器便宜（当然是山寨的）且稳定，仅此两条就足以让人动心了，更何况其广泛的群众基础以及低廉的价格。<br>ST有两个大系列，STM8和STM32，分别是8位和32位的MCU，前者应该是ST自主研发的核心，后者是ARM核心。其实除了心里上的5V完全兼容和稍稍低廉的价格，STM8应该已经没有多少市场，当然针对批量的极其低端的应用还是可以考虑的。STM32系列大部分都能够兼容5V电平，当然心理上还是做个电平转换比较安心，如今主流的电压还是3.3V，针对不同的应用，ST推出了不同等级的芯片。这里就从STM32系列中选择一个目标型号。<br>由于不需要低功耗，首先排除STM32L系列，</p>
+<h3 id="FPGA选型">FPGA选型</h3><p>FPGA基本现在就两大阵营，X家和A家，Altera如今已经被Intel收购，两家如今都把心思放在中高端市场，都在大力发展SOC技术。随着MCU等通用处理器的性能越来越强，特别是在ARM大行其道的背景之下，FPGA的前景越来越不明朗，中低端市场逐渐成为MCU的天下，FPGA的圈子越来越小，对于学习来说，这当然是个不幸的消息，如今的FPGA器件基本都采用了BGA封装，这对于没有条件的初学者来说是个很大的障碍。总的来说，FPGA选型并不是一个很困难的事，可选芯片相比MCU来说要少得多。对于刚刚开始FPGA开发或者没有加工条件的开发者来说，选择一款QFP型的芯片能减轻不少困难；但对于FPGA来说，容量和管脚数目是最重要的指标，贴片类型的芯片极大限制了管脚数目，相应的也限制了逻辑量。针对普通应用来说，低端的贴片型芯片也可以满足要求。由于对Xilinx不是很熟悉，这里选择了Altera的Cyclone IV中的EP4CE10E22C8N的芯片作为目标芯片。</p>
+<h2 id="电路设计">电路设计</h2><p>选定芯片之后就需要针对实际需求进行电路设计，主要包括主芯片接口设计和外围电路设计。由于STM32更加适合串行逻辑设计，而FPGA更加适合并行逻辑设计，因此把STM32用作与外界通信、复杂逻辑管理以及浮点型运算，FPGA用作并行扩展和底层驱动。</p>
+<h3 id="FPGA与STM32通讯">FPGA与STM32通讯</h3><p>FPGA与STM32各司其职，但作为系统，两者之间需要进行简单高速的通信，简单即逻辑简单，通讯接口不能和网络接口那样复杂，通讯不需要复杂的协议和可靠性保证（板上传输相对可靠，无须复杂机制）。此外，两者之间需要告诉通信以保证良好的延时和一定的带宽。最常见的手段就是将FPGA模拟成SRAM，MCU或者DSP通过告诉存储接口访问FPGA的数据，如果配合类似SDRAM的接口，则两者之间的地址可以扩展到很高。对STM32来说，使用FSMC或者FMC接口与FPGA通讯是首选，如果增加一个IO作为FPGA的中断，则能保证极好的双向通讯延时。当然，在FPGA的管脚不是很富裕的情况下，也可以通过SPI甚至USRT之类的进口进行通讯，当然串行会影响极限的通讯速率，而且逻辑也会更加复杂。当然还有一种选择是在MCU具备LVDS之类差分串行接口时，使用差分串行接口能保证极高的通讯速率和较低的管脚开销。</p>
+<h3 id="电源设计">电源设计</h3><p>由于如今的集成电路主频越来越高，核心电压也越来越小，STM32的IO采用了3.3V的电压（大部分IO能够容忍5V电压），而FPGA普遍采用了宽电压兼容，但最高只能支持到3.3V；FPGA的电源相对MCU来说要复杂，除了IO电压还需要提供核心电压、PLL电压等不同标准的电压（可能是通用型的考虑，FPGA并没有内建电源转换模块，至少Altera是这样）；此外，FPGA对于电源稳定性有着更高的要求，当然根据负载不同应该有较大的浮动空间，当然，更为麻烦的是有些FPGA对于上电顺序有一定的要求，比如zynq的两种逻辑部分上电顺序有一定时许要求。<br>对于一个一般的系统来说，比如我们的目标系统，我们需要3.3V、2.5V、1.2V三种电源。其中，3.3V主要供给STM32和FPGA的IO；2.5V是辅助电源，直接相关的是JTAG电路，1.2V是核心电压以及PLL电源。相对来说3.3V和1.2V电源电流要求比较大；当然，如果有DDR之类的差分信号，IO电源为2.5V的话，2.5V的电流也会要求比较高。对于一般应用来说，用个AMS1117就能完成所有电压要求，但如果要求高，那么使用小型DCDC会有比较好的效果，比如MP2144，配合一体成型电感会有很好的电路面积。</p>
+<h3 id="STM32外围电路设计">STM32外围电路设计</h3><h3 id="FPGA外围电路设计">FPGA外围电路设计</h3><h2 id="程序设计">程序设计</h2></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/10/19/drive-lcd/" itemprop="url">
                 LCD接口及驱动电路
               </a>
@@ -390,7 +585,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -404,7 +599,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
@@ -438,7 +633,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp; 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>

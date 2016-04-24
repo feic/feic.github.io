@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="杂," />
+  <meta name="keywords" content="STM32,FPGA,FSMC,选型" />
 
 
 
@@ -39,19 +39,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
+<meta name="description" content="STM32+FPGA平台构建指南前言如今的电子中央单元五花八门，一个电子工程师需要面对各种各样的MCU、DSP、FPGA，小众一点，还有XMOS之类的器件，这也就是为什么用了中央单元这么一个牵强的词汇。对于大部分数字应用来说，一个强大的MCU就足以应付，实在不行就提高频率，增加面积，一个不行就两个；这也是当前的主流思路，毕竟软件开发比硬件开发来得容易的多。当然还是有少数应用场景牢牢地被FPGA占据">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新博开张">
-<meta property="og:url" content="http://yoursite.com/2015/10/18/startup/index.html">
+<meta property="og:title" content="STM32+FPGA-step-by-step">
+<meta property="og:url" content="http://yoursite.com/2015/11/18/STM32-FPGA-step-by-step/index.html">
 <meta property="og:site_name" content="Allium's Blog">
-<meta property="og:description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
-<meta property="og:updated_time" content="2015-10-18T06:40:41.543Z">
+<meta property="og:description" content="STM32+FPGA平台构建指南前言如今的电子中央单元五花八门，一个电子工程师需要面对各种各样的MCU、DSP、FPGA，小众一点，还有XMOS之类的器件，这也就是为什么用了中央单元这么一个牵强的词汇。对于大部分数字应用来说，一个强大的MCU就足以应付，实在不行就提高频率，增加面积，一个不行就两个；这也是当前的主流思路，毕竟软件开发比硬件开发来得容易的多。当然还是有少数应用场景牢牢地被FPGA占据">
+<meta property="og:updated_time" content="2015-12-13T14:56:47.484Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新博开张">
-<meta name="twitter:description" content="自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。
-　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了BingoH的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年">
+<meta name="twitter:title" content="STM32+FPGA-step-by-step">
+<meta name="twitter:description" content="STM32+FPGA平台构建指南前言如今的电子中央单元五花八门，一个电子工程师需要面对各种各样的MCU、DSP、FPGA，小众一点，还有XMOS之类的器件，这也就是为什么用了中央单元这么一个牵强的词汇。对于大部分数字应用来说，一个强大的MCU就足以应付，实在不行就提高频率，增加面积，一个不行就两个；这也是当前的主流思路，毕竟软件开发比硬件开发来得容易的多。当然还是有少数应用场景牢牢地被FPGA占据">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -63,7 +60,7 @@
 
 
 
-  <title> 新博开张 | Allium's Blog </title>
+  <title> STM32+FPGA-step-by-step | Allium's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -165,7 +162,7 @@
           
           
             
-              新博开张
+              STM32+FPGA-step-by-step
             
           
         </h1>
@@ -174,8 +171,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2015-10-18T14:11:56+08:00" content="2015-10-18">
-            2015-10-18
+          <time itemprop="dateCreated" datetime="2015-11-18T20:02:53+08:00" content="2015-11-18">
+            2015-11-18
           </time>
         </span>
 
@@ -194,10 +191,13 @@
       
 
       
-        <span itemprop="articleBody"><p>　　自从大学开始接触计算机，尝试过很多的博客，当然都是浅尝则止，博客网站太low，云服务器总是被封，VPS又没空管理，每每写了几篇水文之后就草草放弃。</p>
-<p>　　最近一段时间一直在尝试VPS，无奈的是时间太少，自己又很浮躁，无力管理，总是被攻击。虽然早就知道GitHub能够搭建博客，但一直没有仔细研究，听了<a href="http://bingoh.github.io" target="_blank" rel="external">BingoH</a>的建议终于在昨晚测试了实际效果，对于我这种唉装逼的懒人来说，确实是个很好的选择，荒废了一年的域名也算有了用途，希望能够坚持下去。</p>
-<p>　　本博客主要关注电子及计算机行业，由于工作是硬件相关，更多的会涉及硬件，尤其是FPGA和单片机方向。</p>
-</span>
+        <span itemprop="articleBody"><h1 id="STM32+FPGA平台构建指南">STM32+FPGA平台构建指南</h1><h2 id="前言">前言</h2><p>如今的电子中央单元五花八门，一个电子工程师需要面对各种各样的MCU、DSP、FPGA，小众一点，还有XMOS之类的器件，这也就是为什么用了中央单元这么一个牵强的词汇。对于大部分数字应用来说，一个强大的MCU就足以应付，实在不行就提高频率，增加面积，一个不行就两个；这也是当前的主流思路，毕竟软件开发比硬件开发来得容易的多。当然还是有少数应用场景牢牢地被FPGA占据，当然空间也越来越少，这些少数的场景主要是高可靠性高性能要求的工业并行控制、通信行业、图像处理行业等。<br>当然，不管怎么说，FPGA都是个很有趣的平台，能够实现任何你想实现的数字电路，不幸的是，FPGA的开发难度很高，特别针对串行逻辑设计，虽然有软核之类的IP，针对某些特定应用效果也很好，但总有些别扭。当然，现在有一种完美的选择，SOC，以zynq为代表的ARM+FPGA的完美平台，不过无奈的是，完美意味着贵，zynq最低端的芯片也要一百多软妹币，硬件设计难度也很大。比较折中的一种实现就是MCU芯片+FPGA芯片，通过高速存储通道进行通信，这就是本文讨论的主题。类似的平台其实也不鲜见，应用极其广泛的DSP+FPGA就算是一个变种；当然如果三者联合起来，那就是一种更有趣的平台了。<br>当然，一切以应用为导向，MCU+FPGA平台主要面向对并行和通信都有一定要求的场合，比如高可靠性的多电机控制。</p>
+<h2 id="器件选型">器件选型</h2><h3 id="MCU选型">MCU选型</h3><p>如今的MCU也是五花八门，虽然ARM有点一家独大的意思，MIPS、PPC甚至51也都还有一定的生存空间。从去年开始接触MCU以来，一共也就接触了AVR、STM8S、STM32三个类型五六种型号的芯片，接触不算多，认识可能还不够。总的来说，AVR在STM32以前很是火了一把，用起来比较舒服，相对稳定，但价格较高二解密简单，慢慢走向没落，如今atmel已被收购，一代霸主悄然落幕。PIC没有用过，网上的说法是极其稳定，相对小众。MSP系列主要面向低功耗，不过TI的开发环境个人觉得比较好。C8051系列只基本接触过，了解不深，似乎没有太大的特色。那么，现在到底应该选择哪一款MCU呢，没错，ST的；不过先说说缺点，STM8系列并没有使用ARM核心，开发环境比较麻烦，当然，IAR for STM8S已经有和谐了；早期的STM32和STM8系列的晶振电路都不稳定，容易受干扰，虽然现在似乎没有类似的抱怨，但总有些担心；此外ST的产品体系还是比较大的，库也比较大，资料较为分散，对于初学者和其他平台转型过来的开发者在最初并不是那么友好。再来说说优点，系列完整，可以用一个体系应对基本所有MCU需求，调试器便宜（当然是山寨的）且稳定，仅此两条就足以让人动心了，更何况其广泛的群众基础以及低廉的价格。<br>ST有两个大系列，STM8和STM32，分别是8位和32位的MCU，前者应该是ST自主研发的核心，后者是ARM核心。其实除了心里上的5V完全兼容和稍稍低廉的价格，STM8应该已经没有多少市场，当然针对批量的极其低端的应用还是可以考虑的。STM32系列大部分都能够兼容5V电平，当然心理上还是做个电平转换比较安心，如今主流的电压还是3.3V，针对不同的应用，ST推出了不同等级的芯片。这里就从STM32系列中选择一个目标型号。<br>由于不需要低功耗，首先排除STM32L系列，</p>
+<h3 id="FPGA选型">FPGA选型</h3><p>FPGA基本现在就两大阵营，X家和A家，Altera如今已经被Intel收购，两家如今都把心思放在中高端市场，都在大力发展SOC技术。随着MCU等通用处理器的性能越来越强，特别是在ARM大行其道的背景之下，FPGA的前景越来越不明朗，中低端市场逐渐成为MCU的天下，FPGA的圈子越来越小，对于学习来说，这当然是个不幸的消息，如今的FPGA器件基本都采用了BGA封装，这对于没有条件的初学者来说是个很大的障碍。总的来说，FPGA选型并不是一个很困难的事，可选芯片相比MCU来说要少得多。对于刚刚开始FPGA开发或者没有加工条件的开发者来说，选择一款QFP型的芯片能减轻不少困难；但对于FPGA来说，容量和管脚数目是最重要的指标，贴片类型的芯片极大限制了管脚数目，相应的也限制了逻辑量。针对普通应用来说，低端的贴片型芯片也可以满足要求。由于对Xilinx不是很熟悉，这里选择了Altera的Cyclone IV中的EP4CE10E22C8N的芯片作为目标芯片。</p>
+<h2 id="电路设计">电路设计</h2><p>选定芯片之后就需要针对实际需求进行电路设计，主要包括主芯片接口设计和外围电路设计。由于STM32更加适合串行逻辑设计，而FPGA更加适合并行逻辑设计，因此把STM32用作与外界通信、复杂逻辑管理以及浮点型运算，FPGA用作并行扩展和底层驱动。</p>
+<h3 id="FPGA与STM32通讯">FPGA与STM32通讯</h3><p>FPGA与STM32各司其职，但作为系统，两者之间需要进行简单高速的通信，简单即逻辑简单，通讯接口不能和网络接口那样复杂，通讯不需要复杂的协议和可靠性保证（板上传输相对可靠，无须复杂机制）。此外，两者之间需要告诉通信以保证良好的延时和一定的带宽。最常见的手段就是将FPGA模拟成SRAM，MCU或者DSP通过告诉存储接口访问FPGA的数据，如果配合类似SDRAM的接口，则两者之间的地址可以扩展到很高。对STM32来说，使用FSMC或者FMC接口与FPGA通讯是首选，如果增加一个IO作为FPGA的中断，则能保证极好的双向通讯延时。当然，在FPGA的管脚不是很富裕的情况下，也可以通过SPI甚至USRT之类的进口进行通讯，当然串行会影响极限的通讯速率，而且逻辑也会更加复杂。当然还有一种选择是在MCU具备LVDS之类差分串行接口时，使用差分串行接口能保证极高的通讯速率和较低的管脚开销。</p>
+<h3 id="电源设计">电源设计</h3><p>由于如今的集成电路主频越来越高，核心电压也越来越小，STM32的IO采用了3.3V的电压（大部分IO能够容忍5V电压），而FPGA普遍采用了宽电压兼容，但最高只能支持到3.3V；FPGA的电源相对MCU来说要复杂，除了IO电压还需要提供核心电压、PLL电压等不同标准的电压（可能是通用型的考虑，FPGA并没有内建电源转换模块，至少Altera是这样）；此外，FPGA对于电源稳定性有着更高的要求，当然根据负载不同应该有较大的浮动空间，当然，更为麻烦的是有些FPGA对于上电顺序有一定的要求，比如zynq的两种逻辑部分上电顺序有一定时许要求。<br>对于一个一般的系统来说，比如我们的目标系统，我们需要3.3V、2.5V、1.2V三种电源。其中，3.3V主要供给STM32和FPGA的IO；2.5V是辅助电源，直接相关的是JTAG电路，1.2V是核心电压以及PLL电源。相对来说3.3V和1.2V电源电流要求比较大；当然，如果有DDR之类的差分信号，IO电源为2.5V的话，2.5V的电流也会要求比较高。对于一般应用来说，用个AMS1117就能完成所有电压要求，但如果要求高，那么使用小型DCDC会有比较好的效果，比如MP2144，配合一体成型电感会有很好的电路面积。</p>
+<h3 id="STM32外围电路设计">STM32外围电路设计</h3><h3 id="FPGA外围电路设计">FPGA外围电路设计</h3><h2 id="程序设计">程序设计</h2></span>
       
     </div>
 
@@ -205,7 +205,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/杂/" rel="tag">#杂</a>
+            <a href="/tags/STM32-FPGA-FSMC/" rel="tag">#STM32,FPGA,FSMC</a>
           
         </div>
       
@@ -214,13 +214,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/19/drive-lcd/" rel="prev">LCD接口及驱动电路</a>
+              <a href="/2015/11/18/FSMC-timing-constraints/" rel="prev">FSMC-timing-constraints</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/18/hello-world/" rel="next">Hello World</a>
+              <a href="/2015/10/19/drive-lcd/" rel="next">LCD接口及驱动电路</a>
             
           </div>
         </div>
@@ -324,7 +324,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#STM32+FPGA平台构建指南"><span class="nav-number">1.</span> <span class="nav-text">STM32+FPGA平台构建指南</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#器件选型"><span class="nav-number">1.2.</span> <span class="nav-text">器件选型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MCU选型"><span class="nav-number">1.2.1.</span> <span class="nav-text">MCU选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FPGA选型"><span class="nav-number">1.2.2.</span> <span class="nav-text">FPGA选型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#电路设计"><span class="nav-number">1.3.</span> <span class="nav-text">电路设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FPGA与STM32通讯"><span class="nav-number">1.3.1.</span> <span class="nav-text">FPGA与STM32通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#电源设计"><span class="nav-number">1.3.2.</span> <span class="nav-text">电源设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#STM32外围电路设计"><span class="nav-number">1.3.3.</span> <span class="nav-text">STM32外围电路设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FPGA外围电路设计"><span class="nav-number">1.3.4.</span> <span class="nav-text">FPGA外围电路设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序设计"><span class="nav-number">1.4.</span> <span class="nav-text">程序设计</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
